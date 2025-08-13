@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Digital Diary</title>
+<style>
+  body { font-family: 'Patrick Hand', cursive; background: #f4f0e6; display: flex; justify-content: center; padding: 50px; }
+  #flipbook { width: 600px; height: 800px; background: #fffbe6; box-shadow: 2px 2px 15px rgba(0,0,0,0.2); padding: 30px; overflow: hidden; }
+  .page { display: none; }
+  .page.active { display: block; }
+  button { margin: 10px; padding: 10px 20px; font-size: 16px; }
+</style>
+</head>
+<body>
+  <div id="flipbook">
+    <div class="page active">Diary Entry 1: Today I started my digital diary!</div>
+    <div class="page">Diary Entry 2: I learned how to make a flipbook.</div>
+    <div class="page">Diary Entry 3: Can't wait to add more entries!</div>
+  </div>
+  <div>
+    <button id="prev">Previous</button>
+    <button id="next">Next</button>
+  </div>
+
+  <script>
+    let current = 0;
+    const pages = document.querySelectorAll('.page');
+    function showPage(index) {
+      pages.forEach((p,i) => p.classList.toggle('active', i === index));
+    }
+    document.getElementById('next').onclick = () => {
+      if(current < pages.length-1) current++;
+      showPage(current);
+    };
+    document.getElementById('prev').onclick = () => {
+      if(current > 0) current--;
+      showPage(current);
+    };
+  </script>
+</body>
+</html>
