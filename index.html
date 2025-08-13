@@ -4,39 +4,100 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Digital Diary</title>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
-  body { font-family: 'Patrick Hand', cursive; background: #f4f0e6; display: flex; justify-content: center; padding: 50px; }
-  #flipbook { width: 600px; height: 800px; background: #fffbe6; box-shadow: 2px 2px 15px rgba(0,0,0,0.2); padding: 30px; overflow: hidden; }
-  .page { display: none; }
-  .page.active { display: block; }
-  button { margin: 10px; padding: 10px 20px; font-size: 16px; }
+  body {
+    margin: 0;
+    background: #333; /* background behind diary */
+    font-family: 'Patrick Hand', cursive;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  #diary-container {
+    position: relative;
+    width: 1200px;
+    height: 800px;
+    background: url('pexels-pixabay-207300.jpg') no-repeat center;
+    background-size: cover;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .page {
+    position: absolute;
+    top: 50px;
+    width: 540px;
+    height: 700px;
+    background: #fdf6e3;
+    box-shadow: 2px 2px 15px rgba(0,0,0,0.2);
+    padding: 30px;
+    overflow: auto;
+    transition: transform 0.6s;
+  }
+
+  .left-page { left: 50px; }
+  .right-page { right: 50px; }
+
+  .hidden { transform: translateX(-1500px); }
+  .hidden-right { transform: translateX(1500px); }
+
+  .click-area {
+    position: absolute;
+    top: 0;
+    width: 50px;
+    height: 100%;
+    cursor: pointer;
+  }
+  #left-edge { left: 0; }
+  #right-edge { right: 0; }
 </style>
 </head>
 <body>
-  <div id="flipbook">
-    <div class="page active">Diary Entry 1: Today I started my digital diary!</div>
-    <div class="page">Diary Entry 2: I learned how to make a flipbook.</div>
-    <div class="page">Diary Entry 3: Can't wait to add more entries!</div>
-  </div>
-  <div>
-    <button id="prev">Previous</button>
-    <button id="next">Next</button>
-  </div>
 
-  <script>
-    let current = 0;
-    const pages = document.querySelectorAll('.page');
-    function showPage(index) {
-      pages.forEach((p,i) => p.classList.toggle('active', i === index));
+<div id="diary-container">
+  <!-- Diary Pages -->
+  <div class="page left-page">Entry 1: Today I started my digital diary! 🌟</div>
+  <div class="page right-page hidden">Entry 2: I learned how to make a flipbook. 📖</div>
+  <div class="page left-page hidden">Entry 3: Can't wait to add more entries! ✍️</div>
+  <div class="page right-page hidden-right">Entry 4: Another day, another page! 🌸</div>
+
+  <!-- Clickable edges -->
+  <div id="left-edge" class="click-area"></div>
+  <div id="right-edge" class="click-area"></div>
+</div>
+
+<script>
+let pages = document.querySelectorAll('.page');
+let current = 0;
+
+function showPages() {
+  pages.forEach((p, i) => {
+    p.classList.remove('hidden', 'hidden-right');
+    if (i < current) {
+      p.classList.add('hidden');
+    } else if (i > current+1) {
+      p.classList.add('hidden-right');
     }
-    document.getElementById('next').onclick = () => {
-      if(current < pages.length-1) current++;
-      showPage(current);
-    };
-    document.getElementById('prev').onclick = () => {
-      if(current > 0) current--;
-      showPage(current);
-    };
-  </script>
+  });
+}
+
+document.getElementById('right-edge').onclick = () => {
+  if (current < pages.length - 2) current += 2;
+  showPages();
+};
+
+document.getElementById('left-edge').onclick = () => {
+  if (current > 0) current -= 2;
+  showPages();
+};
+
+// Initialize
+showPages();
+</script>
+
 </body>
 </html>
+
